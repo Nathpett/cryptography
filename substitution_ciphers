@@ -1,0 +1,29 @@
+#helpers
+def has_numbers(text):
+    for c in text:
+        if c.isdigit():
+            return True
+    return False
+
+
+def encode_polybius(text):
+    #encodes text with polybius square using the modern latin alphabet
+
+    if has_numbers(text):
+        raise ValueError("text should not have digit characters")
+
+    text = text.upper()
+    square = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
+    r = ""
+    for c in text:
+        if c in square:
+            i = square.index(c)
+            r += str(i//5 + 1) + str(i % 5 + 1)
+        elif c == "J":
+            r += "24"
+        else:
+            r += c
+    return r
+
+def decode_polybius():
+  pass
