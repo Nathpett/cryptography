@@ -25,5 +25,18 @@ def encode_polybius(text):
             r += c
     return r
 
-def decode_polybius():
-  pass
+def decode_polybius(text):
+    square = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
+    r = ""
+    n = 0
+    while n < len(text):
+        if text[n].isnumeric():
+            i, j = text[n: n+2]
+            r += square[(int(i) - 1)*5 + int(j) - 1]
+            n += 2
+        else:
+            r += text[n]
+            n += 1
+    if "I" in r:
+        print("\'J \'may have been overwritten by \'I\', have a closer look human!\n" + r)
+    return r
