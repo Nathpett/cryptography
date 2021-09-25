@@ -1,3 +1,5 @@
+from math import sqrt, ceil
+
 #helpers
 def has_numbers(text):
     for c in text:
@@ -5,7 +7,7 @@ def has_numbers(text):
             return True
     return False
 
-
+# === SUBSTITUTION CIPHERS === 
 def encode_polybius(text):
     #encodes text with polybius square using the modern latin alphabet
 
@@ -39,4 +41,18 @@ def decode_polybius(text):
             n += 1
     if "I" in r:
         print("\'J \'may have been overwritten by \'I\', have a closer look human!\n" + r)
+    return r
+
+
+# === TRANSPOSITION CIPHERS ===
+
+
+def column_transpose(string):
+    # Transposes string by the square root of its length (will rjust string so its length is a perfect square as needed)
+    side_l = ceil(sqrt(len(string)))
+    string = string.ljust(side_l ** 2)
+    r = ''
+    for i in range(side_l):
+        for j in range(side_l):
+            r += (string[j * side_l + i])
     return r
