@@ -56,3 +56,30 @@ def column_transpose(string):
         for j in range(side_l):
             r += (string[j * side_l + i])
     return r
+    
+    
+def encode_IRC(n, string):
+    #Shifts all nonspace charaacters right by n
+    #Then for each word (delimited by space) shift to right by n
+    #repeat n times
+    #add n to start of string
+    
+    space_ins = []
+    i = 0
+    while string.find(" ", i + 1) != -1:
+        i = string.find(" ", i + 1)
+        space_ins.append(i)
+
+    for _ in range(n):
+        string = string.replace(" ", "")
+        string = string[-n:] + string[:-n]
+        string = list(string)
+        for i in space_ins:
+            string.insert(i, " ")
+        string = "".join(string).split(" ")
+        for i, word in enumerate(string):
+            sn = n % len(word)
+            string[i] = word[-sn:] + word[:-sn]
+        string = " ".join(string)
+
+    return str(n) + " "+ string
