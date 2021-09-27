@@ -46,7 +46,6 @@ def decode_polybius(text):
 
 # === TRANSPOSITION CIPHERS ===
 
-
 def column_transpose(string):
     # Transposes string by the square root of its length (will rjust string so its length is a perfect square as needed)
     side_l = ceil(sqrt(len(string)))
@@ -57,13 +56,12 @@ def column_transpose(string):
             r += (string[j * side_l + i])
     return r
     
-    
 def encode_IRC(n, string):
     #Shifts all nonspace charaacters right by n
     #Then for each word (delimited by space) shift to right by n
     #repeat n times
     #add n to start of string
-    
+
     space_ins = []
     i = 0
     while string.find(" ", i + 1) != -1:
@@ -78,8 +76,40 @@ def encode_IRC(n, string):
             string.insert(i, " ")
         string = "".join(string).split(" ")
         for i, word in enumerate(string):
-            sn = n % len(word)
-            string[i] = word[-sn:] + word[:-sn]
+            if len(word) != 0:
+                sn = n % len(word)
+                string[i] = word[-sn:] + word[:-sn]
         string = " ".join(string)
 
-    return str(n) + " "+ string
+    return str(n) + " " + string
+
+
+def decode_IRC(string):
+    n = int(string[:string.index(" ")])
+    string = string[string.index(" ") + 1:]
+
+    i = 0
+    space_ins = []
+    while string.find(" ", i + 1) != -1:
+        i = string.find(" ", i + 1)
+        space_ins.append(i)
+
+    for _ in range(n):
+        string = string.split(" ")
+        for i, word in enumerate(string):
+            if len(word) != 0:
+                sn = n % len(word)
+                string[i] = word[sn:] + word[:sn]
+        string = " ".join(string)
+
+        string = string.replace(" ", "")
+        string = string[n:] + string[:n]
+        string = list(string)
+        for i in space_ins:
+            string.insert(i, " ")
+        string = ''.join(string)
+
+    return string
+
+
+
