@@ -1,5 +1,8 @@
 from math import sqrt, ceil
 
+#globals
+ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
 #helpers
 def has_numbers(text):
     for c in text:
@@ -43,6 +46,22 @@ def decode_polybius(text):
         print("\'J \'may have been overwritten by \'I\', have a closer look human!\n" + r)
     return r
 
+def encode_caesar(key, message):
+    key = key % 26
+    r = ""
+    for c in message:
+        if c.upper() in ALPHABET:
+            i = (ALPHABET.index(c.upper()) + key) % 26
+            if c.isupper():
+                r += ALPHABET[i]
+            else:
+                r += ALPHABET[i].lower()
+        else:
+            r += c
+    return r
+    
+def decode_caesar(key, message):
+    return encode_caesar(-key, message)
 
 # === TRANSPOSITION CIPHERS ===
 
