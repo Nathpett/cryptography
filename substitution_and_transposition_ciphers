@@ -63,6 +63,45 @@ def encode_caesar(key, message):
 def decode_caesar(key, message):
     return encode_caesar(-key, message)
 
+
+def encode_ragbaby(text, key, enc = 1):
+    #Similar to ceasar.  key is added to the start of the alphabet, and all non-unique letters are removed.  if "key" is our key, then our 26 char key will be:
+    #"KEYABCDFGHIJLMNOPQRSTUVWXZ"
+    #each letter is then replaced with a letter in that key, offset by its position in its own word
+    
+    #clean key
+    key = list(key)
+    _list = []
+    for c in key:
+        if c not in _list:
+            _list += c
+    key = "".join(_list).upper()
+    
+    #set alp
+    alp = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    alp = "".join([c for c in alp if c not in key])
+    alp = key + alp
+    
+    r = ""
+    j = 1
+    for c in text:
+        if c.upper() in alp:
+            i = (alp.index(c.upper()) + (j * enc)) % 26
+            if c.isupper():
+                r += alp[i]
+            else:
+                r += alp[i].lower()
+            j += 1
+        else:
+            r += c
+            j = 1
+
+    return r
+
+def decode_ragbaby(text, key):
+    return encode_ragbaby(text, key, -1)
+
+
 # === TRANSPOSITION CIPHERS ===
 
 def column_transpose(string):
@@ -130,40 +169,3 @@ def decode_IRC(string):
 
     return string
 
-
-def encode_ragbaby(text, key, enc = 1):
-    #Similar to ceasar.  key is added to the start of the alphabet, and all non-unique letters are removed.  if "key" is our key, then our 26 char key will be:
-    #"KEYABCDFGHIJLMNOPQRSTUVWXZ"
-    #each letter is then replaced with a letter in that key, offset by its position in its own word
-    
-    #clean key
-    key = list(key)
-    _list = []
-    for c in key:
-        if c not in _list:
-            _list += c
-    key = "".join(_list).upper()
-    
-    #set alp
-    alp = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    alp = "".join([c for c in alp if c not in key])
-    alp = key + alp
-    
-    r = ""
-    j = 1
-    for c in text:
-        if c.upper() in alp:
-            i = (alp.index(c.upper()) + (j * enc)) % 26
-            if c.isupper():
-                r += alp[i]
-            else:
-                r += alp[i].lower()
-            j += 1
-        else:
-            r += c
-            j = 1
-
-    return r
-
-def decode_ragbaby(text, key):
-    return encode_ragbaby(text, key, -1)
