@@ -101,6 +101,25 @@ def encode_ragbaby(text, key, enc = 1):
 def decode_ragbaby(text, key):
     return encode_ragbaby(text, key, -1)
 
+def encode_tongues(text):
+    #Ceasar ciper but vowels are replaced with vowels, consonants are replaced with consonants.  Rotation is half the length of each set, so encode function is also decode.
+    VOWELS = "AIYEOU"
+    CONSONANTS = "BKXZNHDCWGPVJQTSRLMF"
+    r = ""
+    for c in text:
+        if c.upper() in VOWELS + CONSONANTS:
+            if c.upper() in VOWELS:
+                alp = VOWELS
+            else:
+                alp = CONSONANTS
+            i = (alp.index(c.upper()) + len(alp)//2) % len(alp)
+            if c.isupper():
+                r += alp[i]
+            else:
+                r += alp[i].lower()
+        else:
+            r += c
+    return r
 
 # === TRANSPOSITION CIPHERS ===
 
