@@ -121,6 +121,37 @@ def encode_tongues(text):
             r += c
     return r
 
+
+def encrypt_index_difference(text):
+    #encrypts in three steps explained in comments
+    REGION = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,:;-?! \'()$%&"'
+    if not text:
+        return text
+    
+    #validate input, throw error if char not in REGION
+    if any([c not in REGION for c in text]):
+        raise ValueError(f'char "{c}" not in REGION')
+    
+    #Step 1: Swap case of every 2nd char
+    text = list(text)
+    for i in range(1, len(text), 2):
+        c = text[i]
+        if c.upper() in REGION[:25]:
+            text[i] = c.swapcase()
+    text = "".join(text)
+    
+    #step 2: replace every char with index in REGION of difference of index in REGION of self and the index in REGION of left neighbor.  Ignore first char.  
+    r = text[0]
+    for i in range(1, len(text)):
+        c1 = text[i - 1]
+        c2 = text[i]
+        r += REGION[REGION.index(c1) - REGION.index(c2)]
+    
+    #step 3: replace first char with its mirrored index in REGION
+    r = REGION[-1 * REGION.index(r[0]) - 1] + r[1:]
+    
+    return r
+
 # === TRANSPOSITION CIPHERS ===
 
 def column_transpose(string):
@@ -187,4 +218,3 @@ def decode_IRC(string):
         string = ''.join(string)
 
     return string
-
