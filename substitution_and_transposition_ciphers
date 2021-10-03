@@ -153,7 +153,7 @@ def encrypt_index_difference(text):
     
     return r
 
-def decrypt(text):
+def decrypt_index_difference(text):
     if not text:
         return text
     
