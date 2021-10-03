@@ -2,6 +2,7 @@ from math import sqrt, ceil
 
 #globals
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+REGION = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,:;-?! \'()$%&"'
 
 #helpers
 def has_numbers(text):
@@ -136,7 +137,7 @@ def encrypt_index_difference(text):
     text = list(text)
     for i in range(1, len(text), 2):
         c = text[i]
-        if c.upper() in REGION[:25]:
+        if c.upper() in REGION[:26]:
             text[i] = c.swapcase()
     text = "".join(text)
     
@@ -152,6 +153,31 @@ def encrypt_index_difference(text):
     
     return r
 
+def decrypt(text):
+    if not text:
+        return text
+    
+    #validate input, throw error if char not in REGION
+    if any([c not in REGION for c in text]):
+        raise ValueError(f'char "{c}" not in REGION')
+    
+    text = REGION[-1 * REGION.index(text[0]) - 1] + text[1:]
+    
+    text = list(text)
+    for i in range(1, len(text)):
+        c1 = text[i - 1]
+        c2 = text[i]
+        text[i] = REGION[REGION.index(c1) - REGION.index(c2)]
+    
+    for i in range(1, len(text), 2):
+        c = text[i]
+        if c.upper() in REGION[:26]:
+            text[i] = c.swapcase()
+    
+    text = "".join(text)
+    
+    return text
+    
 # === TRANSPOSITION CIPHERS ===
 
 def column_transpose(string):
