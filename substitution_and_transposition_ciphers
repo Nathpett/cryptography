@@ -244,3 +244,7 @@ def decode_IRC(string):
         string = ''.join(string)
 
     return string
+
+def encode_cut_deck(text):
+    #returns string of every other char appended to every otherchar offset by 1
+    return "".join([text[i] for i in range(0, len(text), 2)] + [text[i] for i in range(1, len(text), 2)])
